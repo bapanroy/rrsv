@@ -260,6 +260,7 @@ if($fromDate!="" && $endDate!="" && $session=="" && $purpose=="")
     <td></td>
     <td></td>
         <td></td>
+        <td></td>
     <td><?php echo $incomeamount;?></td>
     <td></td>
         <td><?php echo $expamount;?></td>
