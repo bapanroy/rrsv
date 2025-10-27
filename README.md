@@ -1,19 +1,26 @@
-# rrsv
-rrsv
--- Homework / Exam master
-CREATE TABLE homework_exam (
+-- --------------------------------------------------------
+-- Homework / Exam Master Table
+-- --------------------------------------------------------
+CREATE TABLE rrsv_homework_exam (
   id INT AUTO_INCREMENT PRIMARY KEY,
+  class_id INT NOT NULL,
+  subject_id INT NOT NULL,
   teacher_id INT NOT NULL,
-  title VARCHAR(255) NOT NULL,
+  session VARCHAR(25) NOT NULL,
+  unit VARCHAR(25) NOT NULL,
+  book_name VARCHAR(255) NOT NULL,
+  chapter_name VARCHAR(255) NOT NULL,
   description TEXT,
   type ENUM('homework','exam') DEFAULT 'homework',
-  class_id INT NOT NULL,
-  subject VARCHAR(100),
+  class_date DATE NOT NULL,
+  status ENUM('active','inactive') DEFAULT 'active',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Questions under each exam/homework
-CREATE TABLE homework_exam_questions (
+-- --------------------------------------------------------
+-- Questions Table
+-- --------------------------------------------------------
+CREATE TABLE rrsv_homework_exam_questions (
   id INT AUTO_INCREMENT PRIMARY KEY,
   exam_id INT NOT NULL,
   question TEXT NOT NULL,
@@ -22,33 +29,40 @@ CREATE TABLE homework_exam_questions (
   option_c VARCHAR(255),
   option_d VARCHAR(255),
   correct_answer VARCHAR(10),
-  FOREIGN KEY (exam_id) REFERENCES homework_exam(id)
+  FOREIGN KEY (exam_id) REFERENCES rrsv_homework_exam(id)
 );
 
--- Teacher model answers
-CREATE TABLE teacher_answers (
+-- --------------------------------------------------------
+-- Teacher Model Answers
+-- --------------------------------------------------------
+CREATE TABLE rrsv_teacher_answers (
   id INT AUTO_INCREMENT PRIMARY KEY,
   question_id INT NOT NULL,
   answer TEXT NOT NULL,
-  FOREIGN KEY (question_id) REFERENCES homework_exam_questions(id)
+  FOREIGN KEY (question_id) REFERENCES rrsv_homework_exam_questions(id)
 );
 
--- Student answers
-CREATE TABLE student_answers (
+-- --------------------------------------------------------
+-- Student Answers
+-- --------------------------------------------------------
+CREATE TABLE rrsv_student_answers (
   id INT AUTO_INCREMENT PRIMARY KEY,
   student_id INT NOT NULL,
   question_id INT NOT NULL,
   answer TEXT NOT NULL,
-  FOREIGN KEY (question_id) REFERENCES homework_exam_questions(id)
+  FOREIGN KEY (question_id) REFERENCES rrsv_homework_exam_questions(id)
 );
 
--- Summary of student performance
-CREATE TABLE student_homework_summary (
+-- --------------------------------------------------------
+-- Student Summary
+-- --------------------------------------------------------
+CREATE TABLE rrsv_student_homework_summary (
   id INT AUTO_INCREMENT PRIMARY KEY,
   student_id INT NOT NULL,
   exam_id INT NOT NULL,
   total_questions INT,
   correct_answers INT,
   score DECIMAL(5,2),
-  submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (exam_id) REFERENCES rrsv_homework_exam(id)
 );
