@@ -66,3 +66,5 @@ CREATE TABLE rrsv_student_homework_summary (
   submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (exam_id) REFERENCES rrsv_homework_exam(id)
 );
+
+ALTER TABLE `rrsv_homework_exam_questions` CHANGE `question` `question` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
