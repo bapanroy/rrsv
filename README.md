@@ -68,3 +68,4 @@ CREATE TABLE rrsv_student_homework_summary (
 );
 
 ALTER TABLE `rrsv_homework_exam_questions` CHANGE `question` `question` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+ALTER TABLE `rrsv_homework_exam_questions` ADD `marks` INT NULL AFTER `option_d`;
