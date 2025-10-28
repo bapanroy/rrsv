@@ -99,25 +99,15 @@ $html .= '<table border="1" cellpadding="5" cellspacing="0" width="100%" style="
 </thead>
 <tbody>
 ';
-
 $rowCount = 0;
 while ($row = mysqli_fetch_assoc($result)) {
     $syllabus_id = $row['id'];
     $detailsRes = mysqli_query($myDB, "SELECT * FROM rrsv_syllabus_details WHERE syllabus_id=$syllabus_id ORDER BY id ASC");
 
-    $detailsHtml = '';
-    while ($d = mysqli_fetch_assoc($detailsRes)) {
-        $chapter = htmlspecialchars($d['chapter']);
-        $description = htmlspecialchars($d['description']);
-        $page_no = !empty($d['page_no']) ?  htmlspecialchars($d['page_no']) : '';
-        $detailsHtml .= "<b>$chapter</b>: $description<br>";
-    }
-
-    $bgcolor = ($rowCount % 2 == 0) ? '#ffffff' : '#f2f2f2';
     $subjectName = htmlspecialchars($row['sub_name']);
-    $unitNumber = (int)$row['unit']; // convert to integer
+    $unitNumber = (int)$row['unit'];
 
-    // Convert unit number to text (PHP 7.4 safe)
+    // Convert unit number to text
     if ($unitNumber == 1) {
         $unitText = '1st Unit';
     } elseif ($unitNumber == 2) {
@@ -127,14 +117,34 @@ while ($row = mysqli_fetch_assoc($result)) {
     } else {
         $unitText = $unitNumber . 'th Unit';
     }
-    $html .= '<tr bgcolor="' . $bgcolor . '">
-        <td width="15%" valign="top"><b>' . $subjectName . '</b></td>
-        <td width="15%" valign="top">' . $unitText . '</td>
-        <td width="55%" valign="top">' . $detailsHtml . '</td>
-        <td width="15%" valign="top">' . $page_no . '</td>
-    </tr>';
+
+    $detailCount = mysqli_num_rows($detailsRes);
+    $rowspanPrinted = false;
+    $bgcolor = ($rowCount % 2 == 0) ? '#ffffff' : '#f2f2f2';
+
+    while ($d = mysqli_fetch_assoc($detailsRes)) {
+        $chapter = htmlspecialchars($d['chapter']);
+        $description = htmlspecialchars($d['description']);
+        $page_no = htmlspecialchars($d['page_no']);
+
+        $html .= '<tr bgcolor="' . $bgcolor . '">';
+
+        // Print subject & unit once per subject block (with rowspan)
+        if (!$rowspanPrinted) {
+            $html .= '<td width="15%" rowspan="' . $detailCount . '" valign="top"><b>' . $subjectName . '</b></td>';
+            $html .= '<td width="15%" rowspan="' . $detailCount . '" valign="top">' . $unitText . '</td>';
+            $rowspanPrinted = true;
+        }
+
+        // Details and page numbers per chapter
+        $html .= '<td width="55%" valign="top"><b>' . $chapter . ':</b> ' . $description . '</td>';
+        $html .= '<td width="15%" valign="top">' . $page_no . '</td>';
+        $html .= '</tr>';
+    }
+
     $rowCount++;
 }
+
 
 $html .= '</tbody></table>';
 

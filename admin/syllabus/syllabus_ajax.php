@@ -39,23 +39,29 @@ $html .= '<thead class="bg-theme-colored1 text-white">
 </tr>
 </thead>
 <tbody>';
-
 while ($row = mysqli_fetch_assoc($result)) {
-  $syllabus_id = $row['id'];
-  $detailsRes = mysqli_query($myDB, "SELECT * FROM rrsv_syllabus_details WHERE syllabus_id=$syllabus_id ORDER BY id ASC");
+    $syllabus_id = $row['id'];
+    $detailsRes = mysqli_query($myDB, "SELECT * FROM rrsv_syllabus_details WHERE syllabus_id=$syllabus_id ORDER BY id ASC");
 
-  $detailsHtml = '';
-  while ($d = mysqli_fetch_assoc($detailsRes)) {
-    $chapter = htmlspecialchars($d['chapter']);
-    $description = htmlspecialchars($d['description']);
-    $page_no = $d['page_no'] != '' ?  htmlspecialchars($d['page_no'])  : '';
-    $detailsHtml .= "<b>$chapter</b>: $description<br>";
-  }
+    $detailsHtml = '';
+    $pageNumbersHtml = ''; // store formatted page numbers
 
-  $subjectName = htmlspecialchars($row['sub_name']);
- $unitNumber = (int)$row['unit']; // convert to integer
+    while ($d = mysqli_fetch_assoc($detailsRes)) {
+        $chapter = htmlspecialchars($d['chapter']);
+        $description = htmlspecialchars($d['description']);
+        $page_no = htmlspecialchars($d['page_no']);
 
-    // Convert unit number to text (PHP 7.4 safe)
+        $detailsHtml .= "<b>$chapter</b>: $description<br>";
+
+        if (!empty($page_no)) {
+            $pageNumbersHtml .= $page_no . "<br>";
+        }
+    }
+
+    $subjectName = htmlspecialchars($row['sub_name']);
+    $unitNumber = (int)$row['unit'];
+
+    // Convert unit number to text
     if ($unitNumber == 1) {
         $unitText = '1st Unit';
     } elseif ($unitNumber == 2) {
@@ -65,14 +71,15 @@ while ($row = mysqli_fetch_assoc($result)) {
     } else {
         $unitText = $unitNumber . 'th Unit';
     }
-  $html .= '<tr>
+
+    $html .= '<tr>
         <td style="vertical-align:top;">' . $subjectName . '</td>
         <td>' . $unitText . '</td>
         <td>' . $detailsHtml . '</td>
-        
-         <td>' . $page_no. '</td>
+        <td>' . $pageNumbersHtml . '</td>
     </tr>';
 }
+
 
 $html .= '</tbody></table>';
 
