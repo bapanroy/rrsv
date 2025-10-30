@@ -1,5 +1,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+
 <style>
     .notice-marquee {
         height: 200px;
@@ -773,7 +774,7 @@ $opening_result = mysqli_query($myDB, $opening);
                                                                                 class="form-control" required>
                                                                                 <?php
                                                                                 $firstClass = true;
-                                                                                $class_q = mysqli_query($myDB, "SELECT id, class_name FROM rrsv_class ORDER BY class_name");
+                                                                                $class_q = mysqli_query($myDB, "SELECT id, class_name FROM rrsv_class ORDER BY id");
                                                                                 while ($r = mysqli_fetch_assoc($class_q)) {
                                                                                     $selected = $firstClass ? 'selected' : '';
                                                                                     echo '<option value="' . $r['id'] . '" ' . $selected . '>' . htmlspecialchars($r['class_name']) . '</option>';
@@ -1503,7 +1504,7 @@ $opening_result = mysqli_query($myDB, $opening);
 
                         <div class="col-sm-6 mb-3">
                             <label>Session<span class="text-red m-2">*</span></label>
-                            <select class="form-control" name="scl_session" id="scl_session" required>
+                            <select class="form-control" name="session" id="scl_session">
                                 <option value="">-Select a Session -</option>
                                 <?php
                                 for ($i = date("Y") - 3; $i <= date("Y") + 10; $i++) {
@@ -2286,19 +2287,21 @@ $opening_result = mysqli_query($myDB, $opening);
                         if (d.inquery_type === 'Admission') {
                            $('input[name="scl_name"]').val(d.name || '').prop('readonly', true); 
                             $('select[name="scl_class"]').val(d.class_name || '').prop('disabled', true);
-                            $('<input>').attr({ type: 'hidden', name: 'scl_class', value: d.class_name || '' }).appendTo('#admission_form');
-                             $('<input>').attr({ type: 'hidden', name: 'scl_session', value: d.scl_session || '' }).appendTo('#admission_form');
+                           
                             $('input[name="scl_phone_no"]').val(d.phone || '').prop('readonly', true);
-                            $('select[name="scl_session"]').val(d.scl_session || '').prop('disabled', true);
+                            $('select[name="session"]').val(d.scl_session || '').prop('disabled', true);
+                             $('<input>').attr({ type: 'hidden', name: 'scl_class', value: d.class_name || '' }).appendTo('#admission_form');
+                             $('<input>').attr({ type: 'hidden', name: 'scl_session', value: d.scl_session || '' }).appendTo('#admission_form');
                             $('input[name="scl_date"]').val(d.d_o_i|| '');
                         } else {
                             $('input[name="id"]').val(rd.id) ?? '';
                             $('input[name="scl_name"]').val(d.name || '').prop('readonly', true); 
                             $('select[name="scl_class"]').val(d.class_name || '').prop('disabled', true);
+                            $('input[name="scl_phone_no"]').val(d.phone || '').prop('readonly', true);
+                            $('select[name="session"]').val(d.scl_session || '').prop('disabled', true);
+                            
                             $('<input>').attr({ type: 'hidden', name: 'scl_class', value: d.class_name || '' }).appendTo('#admission_form');
                              $('<input>').attr({ type: 'hidden', name: 'scl_session', value: d.scl_session || '' }).appendTo('#admission_form');
-                            $('input[name="scl_phone_no"]').val(d.phone || '').prop('readonly', true);
-                            $('select[name="scl_session"]').val(d.scl_session || '').prop('disabled', true);
                             $('select[name="scl_section"]').val(rd.scl_section || '');
                             $('input[name="scl_date"]').val(new Date().toISOString().split('T')[0]);
 
