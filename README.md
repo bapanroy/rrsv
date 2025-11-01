@@ -71,3 +71,16 @@ ALTER TABLE `rrsv_homework_exam_questions` CHANGE `question` `question` TEXT CHA
 ALTER TABLE `rrsv_homework_exam_questions` ADD `marks` INT NULL AFTER `option_d`;
 
 ALTER TABLE `rrsv_homework_exam` ADD `title` VARCHAR(100) NOT NULL AFTER `id`;
+
+CREATE TABLE rrsv_question_type (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  type_code VARCHAR(50) NOT NULL UNIQUE,  -- e.g. 'mcq', 'descriptive'
+  type_name VARCHAR(100) NOT NULL,        -- e.g. 'Multiple Choice', 'Descriptive'
+  status ENUM('active', 'inactive') DEFAULT 'active',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+INSERT INTO rrsv_question_type (type_code, type_name) VALUES
+('mcq', 'Multiple Choice'),
+('descriptive', 'Descriptive'),
+('yes_no', 'Yes / No');
+
