@@ -84,3 +84,6 @@ INSERT INTO rrsv_question_type (type_code, type_name) VALUES
 ('descriptive', 'Descriptive'),
 ('yes_no', 'Yes / No');
 
+
+ALTER TABLE `rrsv_homework_exam_questions` ADD `question_type` VARCHAR(100) NULL DEFAULT NULL AFTER `question`;
+
