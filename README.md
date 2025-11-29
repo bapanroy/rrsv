@@ -86,4 +86,6 @@ INSERT INTO rrsv_question_type (type_code, type_name) VALUES
 
 
 ALTER TABLE `rrsv_homework_exam_questions` ADD `question_type` VARCHAR(100) NULL DEFAULT NULL AFTER `question`;
-
+ALTER TABLE `rrsv_vendor` ADD `mobile` VARCHAR(10) NOT NULL AFTER `status`, ADD `email` VARCHAR(20) NULL DEFAULT NULL AFTER `mobile`, ADD `address` TEXT NOT NULL AFTER `email`;
+ALTER TABLE `rrsv_student_registration` ADD `password` VARCHAR(50) NOT NULL DEFAULT 'RRSV_1234' AFTER `scl_name`;
+ALTER TABLE `rrsv_teacher` ADD `password` VARCHAR(50) NOT NULL DEFAULT 'RRSV_1234' AFTER `full_name`;
