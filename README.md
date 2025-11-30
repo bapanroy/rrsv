@@ -143,3 +143,5 @@ CREATE TABLE `rrsv_vendor_bill_payments` (
 INSERT INTO `rrsv_vendor_bill_payments` (`id`, `bill_id`, `pay_date`, `paid_amount`, `remarks`, `created_at`) VALUES
 (1, 1, '2025-11-27', 150.00, 'ok', '2025-11-27 15:13:34'),
 (2, 1, '2025-11-28', 5.00, 'ok', '2025-11-28 03:09:27');
+
+ALTER TABLE `rrsv_vendor_bills` ADD `vouture_file` VARCHAR(20) NULL DEFAULT NULL AFTER `balance_amount`, ADD `session` VARCHAR(10) NULL DEFAULT NULL AFTER `vouture_file`;
