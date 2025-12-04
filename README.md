@@ -147,3 +147,4 @@ INSERT INTO `rrsv_vendor_bill_payments` (`id`, `bill_id`, `pay_date`, `paid_amou
 ALTER TABLE `rrsv_vendor_bills` ADD `vouture_file` VARCHAR(20) NULL DEFAULT NULL AFTER `balance_amount`, ADD `session` VARCHAR(10) NULL DEFAULT NULL AFTER `vouture_file`;
 
 ALTER TABLE `rrsv_student_homework_summary` ADD `remarks` VARCHAR(20) NULL DEFAULT '0' AFTER `score`;
+ALTER TABLE `rrsv_homework_exam_questions` ADD `question_head` TEXT NULL DEFAULT NULL AFTER `question`;
